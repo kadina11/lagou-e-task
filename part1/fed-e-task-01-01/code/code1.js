@@ -13,3 +13,17 @@
   }, 10)
 */
 
+function foo(val){
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(val)
+    }, 10)
+  })
+}
+
+foo('hello')
+  .then(val => foo(val+'lagou'))
+  .then(val => foo(val+'I ♥ U'))
+  .then(console.log)
+
+
