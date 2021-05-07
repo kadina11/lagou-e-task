@@ -31,7 +31,11 @@ if (true) {
 }
 ```
 执行结果：Uncaught ReferenceError: Cannot access 'tmp' before initialization
-原因：在块级作用域中，提前访问tmp会指向let tmp定义的变量,而let定义的变量不会提升
+原因：在块级作用域中，提前访问tmp会指向let tmp定义的变量，
+
+由let/const声明的变量，当它们包含的词法环境(Lexical Environment)被实例化时会被创建，但只有在变量的词法绑定(LexicalBinding)已经被求值运算后，才能够被访问。
+
+说得更明白些，当程序的控制流程在新的作用域(module, function或block作用域)进行实例化时，在此作用域中的用let/const声明的变量会先在作用域中被创建出来，但因此时还未进行词法绑定，也就是对声明语句进行求值运算，所以是不能被访问的，访问就会抛出错误。所以在这运行流程一进入作用域创建变量，到变量开始可被访问之间的一段时间，就称之为TDZ(暂时死区)。
 　
 
 　
@@ -41,6 +45,7 @@ if (true) {
 ```javascript
 var arr = [12, 34, 32, 89, 4]
 ```
+arr.reduce((minVal, val) => Math.min(minVal, val), Infinity)
 arr.sort((a, b) => a - b)[0]
 　
 
